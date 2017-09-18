@@ -7,8 +7,10 @@ public class AmbaruCharacter : MonoBehaviour
     public float speed;
     public float maxSpeed;
     public float turnSpeed;
+    public float gravity = 1.0f;
 
     private Rigidbody rb;
+    private bool eGravity;
 
     void Start()
     {
@@ -39,8 +41,24 @@ public class AmbaruCharacter : MonoBehaviour
         
     }
 
-    void OnCollisionEnter(Collision collision)
+    private void Update()
     {
-        //blah
+        if (eGravity)
+            workGravity();
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
+        eGravity = false;
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        eGravity = true;
+    }
+
+    private void workGravity()
+    {
+        transform.Translate(Vector3.down * gravity * Time.deltaTime);
     }
 }
