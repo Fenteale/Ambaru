@@ -39,4 +39,8 @@ public class AmbaruCharacter : MonoBehaviour
         
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        //blah
+    }
 }
