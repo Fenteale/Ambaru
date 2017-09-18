@@ -26,7 +26,13 @@ public class AmbaruCharacter : MonoBehaviour
 
         oldpos = transform.position;
         //rb.transform.eulerAngles = new Vector3(Mathf.Clamp(rb.rotation.x, 0.0f, 0.0f), rb.rotation.y, rb.rotation.z);
+	if(moveVertical/Mathf.Abs(moveVertical) > 0){
         transform.Rotate(0, moveHorizontal * turnSpeed * Mathf.Abs(moveVertical), 0);
+	}
+	else{
+	transform.Rotate(0, moveHorizontal * turnSpeed * Mathf.Abs(moveVertical), 0);
+	}
+	
         //transform.eulerAngles = new Vector3(Mathf.Clamp(transform.eulerAngles.x, 0.0f, 0.0f), transform.eulerAngles.y, transform.eulerAngles.z);
         transform.Translate(Vector3.forward * moveVertical * speed);
 
