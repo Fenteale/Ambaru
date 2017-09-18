@@ -33,27 +33,32 @@ public class AmbaruCharacter : MonoBehaviour
         //transform.eulerAngles = new Vector3(Mathf.Clamp(transform.eulerAngles.x, 0.0f, 0.0f), transform.eulerAngles.y, transform.eulerAngles.z);
         transform.Translate(Vector3.forward * moveVertical * speed);
 
-        
-    }
-
-    private void Update()
-    {
         if (eGravity)
-            workGravity();
+        {
+            RaycastHit hit;
+            Ray downRay = new Ray(transform.position, -Vector3.up);
+            if (Physics.Raycast(downRay, out hit))
+            {
+                float hoverError = hit.distance - gravity;
+                if (hoverError > 0)
+                {
+                    transform.Translate(Vector3.down * gravity);
+                    //rb.AddForce(lift * Vector3.up);
+                }
+                else
+                    transform.Translate(Vector3.down * hit.distance);
+            }
+        }
+
     }
 
-    void OnCollisionStay(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
         eGravity = false;
     }
 
-    void OnCollisionExit(Collision collision)
+    private void OnCollisionExit(Collision collision)
     {
         eGravity = true;
-    }
-
-    private void workGravity()
-    {
-        transform.Translate(Vector3.down * gravity * Time.deltaTime);
     }
 }
