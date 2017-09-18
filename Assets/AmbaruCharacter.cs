@@ -30,7 +30,7 @@ public class AmbaruCharacter : MonoBehaviour
         transform.Rotate(0, moveHorizontal * turnSpeed * Mathf.Abs(moveVertical), 0);
 	}
 	else{
-	transform.Rotate(0, moveHorizontal * turnSpeed * Mathf.Abs(moveVertical), 0);
+	transform.Rotate(0, moveHorizontal * turnSpeed * Mathf.Abs(moveVertical), 0 * -1);
 	}
 	
         //transform.eulerAngles = new Vector3(Mathf.Clamp(transform.eulerAngles.x, 0.0f, 0.0f), transform.eulerAngles.y, transform.eulerAngles.z);
