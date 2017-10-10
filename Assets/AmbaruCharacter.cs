@@ -38,7 +38,7 @@ public class AmbaruCharacter : MonoBehaviour
         BackWheel.transform.SetPositionAndRotation(new Vector3(bwpos.gameObject.transform.position.x, bwpos.transform.position.y, bwpos.gameObject.transform.position.z), Quaternion.Euler(bwpos.transform.rotation.eulerAngles.x, BackWheel.transform.rotation.eulerAngles.y, BackWheel.transform.rotation.eulerAngles.z));
         bwrad = BackWheel.GetComponent<CapsuleCollider>().radius;
         wheeldistance = fwpos.transform.localPosition.z;
-    }
+    }
    
 
     void Update()
