@@ -42,7 +42,14 @@ public class AmbaruCharacter : MonoBehaviour
     void Update()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+	float moveVertical = 0;
+	if(Input.GetKey("w")){
+		moveVertical = 1;
+	}
+	if(Input.GetKey("s")){
+		moveVertical = -1;
+	}
+        //float moveVertical = Input.GetAxis("Vertical");
         transform.Translate(Vector3.forward * moveVertical * speed * Time.deltaTime);
         //MOVEMENT CODE
         Vector3 movement = new Vector3(0.0f, 0.0f, moveVertical);
