@@ -5,9 +5,11 @@ using UnityEngine;
 public class AmbaruCharacter : MonoBehaviour
 {
     public float speed;
-    public float maxSpeed;
+    public float maxSpeed = 100;
     public float turnSpeed;
     public float gravity = 1.0f;
+    public float friction = 0.1f;
+    public float brakeStrength = 2.0f;
 
     public GameObject FrontWheel;
     public GameObject BackWheel;
@@ -36,24 +38,51 @@ public class AmbaruCharacter : MonoBehaviour
         BackWheel.transform.SetPositionAndRotation(new Vector3(bwpos.gameObject.transform.position.x, bwpos.transform.position.y, bwpos.gameObject.transform.position.z), Quaternion.Euler(bwpos.transform.rotation.eulerAngles.x, BackWheel.transform.rotation.eulerAngles.y, BackWheel.transform.rotation.eulerAngles.z));
         bwrad = BackWheel.GetComponent<CapsuleCollider>().radius;
         wheeldistance = fwpos.transform.localPosition.z;
-    }
+    }
    
 
     void Update()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
-	float moveVertical = 0;
+	float moveVertical = Input.GetAxis("Vertical");
 	if(Input.GetKey("w")){
-		moveVertical = 1;
+		speed += 1;
 	}
-	if(Input.GetKey("s")){
-		moveVertical = -1;
+	else if(Input.GetKey("s")){
+		speed += -1;
+	}
+	else if(Input.GetKey("left shift")){
+		if(speed > brakeStrength){
+			speed -= brakeStrength;
+		}
+		else if(speed < -brakeStrength){
+			speed += brakeStrength;
+		}
+		else{
+			speed = 0;
+		}
+	}
+	else{
+		if(speed > friction){
+			speed -= friction;
+		}
+		else if(speed < -friction){
+			speed += friction;
+		}
+		else{
+			speed = 0;
+		}
+	}
+	if(System.Math.Abs(speed) > maxSpeed){
+		speed = (System.Math.Abs(speed)/speed) * maxSpeed;
 	}
         //float moveVertical = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.forward * moveVertical * speed * Time.deltaTime);
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
         //MOVEMENT CODE
         Vector3 movement = new Vector3(0.0f, 0.0f, moveVertical);
-        transform.Rotate(0, moveHorizontal * turnSpeed * moveVertical*Time.deltaTime, 0);
+        if(speed != 0){
+		transform.Rotate(0, moveHorizontal * (speed/maxSpeed) * turnSpeed *Time.deltaTime, 0);
+	}
         //END MOVEMENT CODE
 
         //SET WHEELS ON GROUND
