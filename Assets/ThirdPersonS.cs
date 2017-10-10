@@ -29,6 +29,7 @@ public class ThirdPersonS : MonoBehaviour {
 
     private void Update()
     {
+        //currentX = lookAt.rotation.eulerAngles.y + Input.GetAxis("Mouse X");
         currentX += Input.GetAxis("Mouse X");
         currentY -= Input.GetAxis("Mouse Y");
 
@@ -39,7 +40,7 @@ public class ThirdPersonS : MonoBehaviour {
     {
         Vector3 dir = new Vector3(0, 0, -distance);
         Vector3 offsety = new Vector3(0, yDistance, 0);
-        Quaternion rotation = Quaternion.Euler(currentY, currentX, 0);
+        Quaternion rotation = Quaternion.Euler(currentY, currentX + lookAt.parent.transform.rotation.eulerAngles.y, 0);
         camTransform.position = lookAt.position + offsety + rotation * dir;
 
         camTransform.LookAt(lookAt.position + offsety);
