@@ -14,6 +14,8 @@ public class AmbaruCharacter : MonoBehaviour
 
     private GameObject fwpos;
     private GameObject bwpos;
+    private GameObject mod;
+    private float modoffset;
     private float bwrad;
     private float wheeldistance;
     private bool eGravity;
@@ -23,6 +25,8 @@ public class AmbaruCharacter : MonoBehaviour
 
         fwpos = this.gameObject.transform.GetChild(1).gameObject;
         bwpos = this.gameObject.transform.GetChild(2).gameObject;
+        mod = this.gameObject.transform.GetChild(0).gameObject;
+        modoffset = mod.transform.localPosition.y;
 
         //Physics.IgnoreCollision(FrontWheel.GetComponent<Collider>(), GetComponent<Collider>());
         //Physics.IgnoreCollision(BackWheel.GetComponent<Collider>(), GetComponent<Collider>());
@@ -36,7 +40,7 @@ public class AmbaruCharacter : MonoBehaviour
     private void LateUpdate()
     {
         FrontWheel.transform.localPosition = new Vector3(fwpos.transform.localPosition.x, FrontWheel.transform.localPosition.y, fwpos.transform.localPosition.z);
-        
+        mod.transform.localPosition = new Vector3(mod.transform.localPosition.x, modoffset+((FrontWheel.transform.localPosition.y - BackWheel.transform.localPosition.y) / 2.0f), mod.transform.localPosition.z);
         //FrontWheel.transform.SetPositionAndRotation(new Vector3(fwpos.gameObject.transform.position.x, FrontWheel.transform.position.y, fwpos.gameObject.transform.position.z), Quaternion.Euler(fwpos.transform.rotation.eulerAngles.x, FrontWheel.transform.rotation.eulerAngles.y, FrontWheel.transform.rotation.eulerAngles.z));
         //BackWheel.transform.SetPositionAndRotation(new Vector3(bwpos.gameObject.transform.position.x, BackWheel.transform.position.y, bwpos.gameObject.transform.position.z), Quaternion.Euler(bwpos.transform.rotation.eulerAngles.x, BackWheel.transform.rotation.eulerAngles.y, BackWheel.transform.rotation.eulerAngles.z));
     }
@@ -56,7 +60,8 @@ public class AmbaruCharacter : MonoBehaviour
         Ray downRay = new Ray(transform.position + Vector3.up, -Vector3.up);
         if(Physics.Raycast(downRay, out hit))
         {
-            BackWheel.transform.localPosition = new Vector3(BackWheel.transform.localPosition.x, -hit.distance+bwrad+1f, BackWheel.transform.localPosition.z);
+            transform.position = transform.position + (Vector3.up *( -hit.distance + bwrad + 1f));
+            //BackWheel.transform.localPosition = new Vector3(BackWheel.transform.localPosition.x, -hit.distance+bwrad+1f, BackWheel.transform.localPosition.z);
         }
 
         downRay = new Ray(fwpos.transform.position+Vector3.up, -Vector3.up);
@@ -75,7 +80,7 @@ public class AmbaruCharacter : MonoBehaviour
 
         fwpos.transform.localPosition = new Vector3(fwpos.transform.localPosition.x, fwpos.transform.localPosition.y, Mathf.Sqrt(Mathf.Pow(wheeldistance, 2) - Mathf.Pow(FrontWheel.transform.localPosition.y - BackWheel.transform.localPosition.y, 2)));
         //END SET BODY ROTATION
-        transform.position = new Vector3(transform.position.x, BackWheel.transform.position.y, transform.position.z);
+        //transform.position = new Vector3(transform.position.x, BackWheel.transform.position.y, transform.position.z);
         transform.Translate(Vector3.forward * moveVertical * speed);
 
         
