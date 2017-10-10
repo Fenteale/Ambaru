@@ -10,6 +10,7 @@ public class AmbaruCharacter : MonoBehaviour
     public float gravity = 1.0f;
     public float friction = 0.1f;
     public float brakeStrength = 2.0f;
+    public float acc = 1f;
 
     public GameObject FrontWheel;
     public GameObject BackWheel;
@@ -46,10 +47,10 @@ public class AmbaruCharacter : MonoBehaviour
         float moveHorizontal = Input.GetAxis("Horizontal");
 	float moveVertical = Input.GetAxis("Vertical");
 	if(Input.GetKey("w")){
-		speed += 1;
+		speed += acc;
 	}
 	else if(Input.GetKey("s")){
-		speed += -1;
+		speed += -acc;
 	}
 	else if(Input.GetKey("left shift")){
 		if(speed > brakeStrength){
