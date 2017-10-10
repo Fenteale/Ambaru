@@ -30,31 +30,23 @@ public class AmbaruCharacter : MonoBehaviour
         modyoffset = mod.transform.localPosition.y;
         modzoffset = mod.transform.localPosition.z;
 
-        //Physics.IgnoreCollision(FrontWheel.GetComponent<Collider>(), GetComponent<Collider>());
-        //Physics.IgnoreCollision(BackWheel.GetComponent<Collider>(), GetComponent<Collider>());
+
 
         FrontWheel.transform.SetPositionAndRotation(new Vector3(fwpos.gameObject.transform.position.x, fwpos.transform.position.y, fwpos.gameObject.transform.position.z), Quaternion.Euler(fwpos.transform.rotation.eulerAngles.x, FrontWheel.transform.rotation.eulerAngles.y, FrontWheel.transform.rotation.eulerAngles.z));
         BackWheel.transform.SetPositionAndRotation(new Vector3(bwpos.gameObject.transform.position.x, bwpos.transform.position.y, bwpos.gameObject.transform.position.z), Quaternion.Euler(bwpos.transform.rotation.eulerAngles.x, BackWheel.transform.rotation.eulerAngles.y, BackWheel.transform.rotation.eulerAngles.z));
         bwrad = BackWheel.GetComponent<CapsuleCollider>().radius;
         wheeldistance = fwpos.transform.localPosition.z;
     }
+   
 
-    private void LateUpdate()
-    {
-        FrontWheel.transform.localPosition = new Vector3(fwpos.transform.localPosition.x, FrontWheel.transform.localPosition.y, fwpos.transform.localPosition.z);
-        mod.transform.localPosition = new Vector3(mod.transform.localPosition.x, modyoffset+((FrontWheel.transform.localPosition.y - BackWheel.transform.localPosition.y) / 2.0f), ((FrontWheel.transform.localPosition.z - BackWheel.transform.localPosition.z) / 2.0f));
-        //FrontWheel.transform.SetPositionAndRotation(new Vector3(fwpos.gameObject.transform.position.x, FrontWheel.transform.position.y, fwpos.gameObject.transform.position.z), Quaternion.Euler(fwpos.transform.rotation.eulerAngles.x, FrontWheel.transform.rotation.eulerAngles.y, FrontWheel.transform.rotation.eulerAngles.z));
-        //BackWheel.transform.SetPositionAndRotation(new Vector3(bwpos.gameObject.transform.position.x, BackWheel.transform.position.y, bwpos.gameObject.transform.position.z), Quaternion.Euler(bwpos.transform.rotation.eulerAngles.x, BackWheel.transform.rotation.eulerAngles.y, BackWheel.transform.rotation.eulerAngles.z));
-    }
-
-    void FixedUpdate()
+    void Update()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.forward * moveVertical * speed);
+        transform.Translate(Vector3.forward * moveVertical * speed * Time.deltaTime);
         //MOVEMENT CODE
         Vector3 movement = new Vector3(0.0f, 0.0f, moveVertical);
-        transform.Rotate(0, moveHorizontal * turnSpeed * moveVertical, 0);
+        transform.Rotate(0, moveHorizontal * turnSpeed * moveVertical*Time.deltaTime, 0);
         //END MOVEMENT CODE
 
         //SET WHEELS ON GROUND
@@ -63,7 +55,6 @@ public class AmbaruCharacter : MonoBehaviour
         if(Physics.Raycast(downRay, out hit))
         {
             transform.position = transform.position + (Vector3.up *( -hit.distance + bwrad + 1f));
-            //BackWheel.transform.localPosition = new Vector3(BackWheel.transform.localPosition.x, -hit.distance+bwrad+1f, BackWheel.transform.localPosition.z);
         }
 
         downRay = new Ray(fwpos.transform.position+Vector3.up, -Vector3.up);
@@ -82,11 +73,13 @@ public class AmbaruCharacter : MonoBehaviour
 
         fwpos.transform.localPosition = new Vector3(fwpos.transform.localPosition.x, fwpos.transform.localPosition.y, Mathf.Sqrt(Mathf.Pow(wheeldistance, 2) - Mathf.Pow(FrontWheel.transform.localPosition.y - BackWheel.transform.localPosition.y, 2)));
         //END SET BODY ROTATION
-        //transform.position = new Vector3(transform.position.x, BackWheel.transform.position.y, transform.position.z);
-        
 
-        
-        
+        //Stuff previously in "late update" function
+        FrontWheel.transform.localPosition = new Vector3(fwpos.transform.localPosition.x, FrontWheel.transform.localPosition.y, fwpos.transform.localPosition.z);
+        mod.transform.localPosition = new Vector3(mod.transform.localPosition.x, modyoffset + ((FrontWheel.transform.localPosition.y - BackWheel.transform.localPosition.y) / 2.0f), ((FrontWheel.transform.localPosition.z - BackWheel.transform.localPosition.z) / 2.0f));
+
+
+
 
     }
 

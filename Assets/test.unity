@@ -948,9 +948,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9385e1d82ab27bc45b154828f39bbfa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 60
   maxSpeed: 0
-  turnSpeed: 3
+  turnSpeed: 300
   gravity: 0.1
   FrontWheel: {fileID: 1945561022}
   BackWheel: {fileID: 12046943}
