@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465782, g: 0.49641246, b: 0.5748167, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -948,12 +948,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9385e1d82ab27bc45b154828f39bbfa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 60
-  maxSpeed: 100
-  turnSpeed: 300
+  speed: 0
+  maxSpeed: 40
+  turnSpeed: 200
   gravity: 0.1
-  friction: 0.1
-  brakeStrength: 2
+  friction: 0.2
+  brakeStrength: 0.4
+  acc: 0.3
   FrontWheel: {fileID: 1945561022}
   BackWheel: {fileID: 12046943}
 --- !u!4 &1896977519
