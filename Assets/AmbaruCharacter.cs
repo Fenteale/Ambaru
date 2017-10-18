@@ -11,6 +11,8 @@ public class AmbaruCharacter : MonoBehaviour
     public float friction = 0.1f;
     public float brakeStrength = 2.0f;
     public float acc = 1f;
+    [Tooltip("How many units above the root of the car to start checking for collision.")]
+    public float collisionOffset = 1f;
 
     public GameObject FrontWheel;
     public GameObject BackWheel;
@@ -22,6 +24,12 @@ public class AmbaruCharacter : MonoBehaviour
     private float modzoffset;
     private float bwrad;
     private float wheeldistance;
+
+    public float fgrav = 0.0f;
+    public float bgrav = 0.0f;
+
+    private float maxGravity;
+
     private bool eGravity;
 
     void Start()
@@ -34,6 +42,9 @@ public class AmbaruCharacter : MonoBehaviour
         modzoffset = mod.transform.localPosition.z;
 
 
+        fgrav = gravity;
+        bgrav = gravity;
+        maxGravity = gravity*10;
 
         FrontWheel.transform.SetPositionAndRotation(new Vector3(fwpos.gameObject.transform.position.x, fwpos.transform.position.y, fwpos.gameObject.transform.position.z), Quaternion.Euler(fwpos.transform.rotation.eulerAngles.x, FrontWheel.transform.rotation.eulerAngles.y, FrontWheel.transform.rotation.eulerAngles.z));
         BackWheel.transform.SetPositionAndRotation(new Vector3(bwpos.gameObject.transform.position.x, bwpos.transform.position.y, bwpos.gameObject.transform.position.z), Quaternion.Euler(bwpos.transform.rotation.eulerAngles.x, BackWheel.transform.rotation.eulerAngles.y, BackWheel.transform.rotation.eulerAngles.z));
@@ -87,18 +98,51 @@ public class AmbaruCharacter : MonoBehaviour
         //END MOVEMENT CODE
 
         //SET WHEELS ON GROUND
+        float oldfwheel = FrontWheel.transform.position.y;
+        float fdelta = 0.0f;
+        float bdelta = 0.0f;
+
         RaycastHit hit;
-        Ray downRay = new Ray(transform.position + Vector3.up, -Vector3.up);
-        if(Physics.Raycast(downRay, out hit))
+        Ray downRay = new Ray(transform.position + Vector3.up* collisionOffset, -Vector3.up);
+        if(Physics.Raycast(downRay, out hit))  //BACK WHEEL
         {
-            transform.position = transform.position + (Vector3.up *( -hit.distance + bwrad + 1f));
+            if(-bgrav < -hit.distance + bwrad + collisionOffset)
+            {
+                bgrav = 0.0f;
+                bdelta = -hit.distance + bwrad + collisionOffset;
+            }
+            else
+            {
+                bgrav += gravity*Time.deltaTime;
+                if (bgrav > maxGravity)
+                    bgrav = maxGravity;
+                bdelta = (-bgrav) * Time.deltaTime;
+            }
+            
         }
 
-        downRay = new Ray(fwpos.transform.position+Vector3.up, -Vector3.up);
-        if (Physics.Raycast(downRay, out hit))
+        downRay = new Ray(fwpos.transform.position+Vector3.up* collisionOffset, -Vector3.up);
+        if (Physics.Raycast(downRay, out hit)) //FRONT WHEEL
         {
-            FrontWheel.transform.localPosition = new Vector3(FrontWheel.transform.localPosition.x, -hit.distance + bwrad+1f, FrontWheel.transform.localPosition.z);
+            if (fgrav + bwrad + collisionOffset > hit.distance)
+            {
+                fgrav = 0.0f;
+
+                fdelta = -hit.distance + bwrad + collisionOffset;
+            }
+            else
+            {
+                fgrav += gravity * Time.deltaTime;
+                if (fgrav > maxGravity)
+                    fgrav = maxGravity;
+
+                fdelta = -fgrav * Time.deltaTime;
+                //FrontWheel.transform.position = new Vector3(FrontWheel.transform.position.x, FrontWheel.transform.position.y + ((-bgrav) * Time.deltaTime), FrontWheel.transform.position.z);
+            }
         }
+
+        transform.position = transform.position + (Vector3.up * bdelta);
+        FrontWheel.transform.position = new Vector3(fwpos.transform.position.x, oldfwheel + bdelta, fwpos.transform.position.z);
 
         //END SET WHEELS ON GROUND
 
@@ -112,7 +156,7 @@ public class AmbaruCharacter : MonoBehaviour
         //END SET BODY ROTATION
 
         //Stuff previously in "late update" function
-        FrontWheel.transform.localPosition = new Vector3(fwpos.transform.localPosition.x, FrontWheel.transform.localPosition.y, fwpos.transform.localPosition.z);
+        //FrontWheel.transform.localPosition = new Vector3(fwpos.transform.localPosition.x, FrontWheel.transform.localPosition.y, fwpos.transform.localPosition.z);
         mod.transform.localPosition = new Vector3(mod.transform.localPosition.x, modyoffset + ((FrontWheel.transform.localPosition.y - BackWheel.transform.localPosition.y) / 2.0f), ((FrontWheel.transform.localPosition.z - BackWheel.transform.localPosition.z) / 2.0f));
 
 
