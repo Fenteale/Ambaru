@@ -25,8 +25,10 @@ public class AmbaruCharacter : MonoBehaviour
     private float bwrad;
     private float wheeldistance;
 
-    public float fgrav = 0.0f;
-    public float bgrav = 0.0f;
+    private float fgrav = 0.0f;
+    private float bgrav = 0.0f;
+
+    private float originfWheel;
 
     private float maxGravity;
 
@@ -49,6 +51,9 @@ public class AmbaruCharacter : MonoBehaviour
         FrontWheel.transform.SetPositionAndRotation(new Vector3(fwpos.gameObject.transform.position.x, fwpos.transform.position.y, fwpos.gameObject.transform.position.z), Quaternion.Euler(fwpos.transform.rotation.eulerAngles.x, FrontWheel.transform.rotation.eulerAngles.y, FrontWheel.transform.rotation.eulerAngles.z));
         BackWheel.transform.SetPositionAndRotation(new Vector3(bwpos.gameObject.transform.position.x, bwpos.transform.position.y, bwpos.gameObject.transform.position.z), Quaternion.Euler(bwpos.transform.rotation.eulerAngles.x, BackWheel.transform.rotation.eulerAngles.y, BackWheel.transform.rotation.eulerAngles.z));
         bwrad = BackWheel.GetComponent<CapsuleCollider>().radius;
+
+		originfWheel = FrontWheel.transform.position.y;
+
         wheeldistance = fwpos.transform.localPosition.z;
     }
    
@@ -98,8 +103,10 @@ public class AmbaruCharacter : MonoBehaviour
         //END MOVEMENT CODE
 
         //SET WHEELS ON GROUND
-        Vector3 oldfwheel = FrontWheel.transform.position;
+        
         // float oldfwheel = FrontWheel.transform.position.y;
+		Transform fwold = fwpos.transform;
+		Vector3 fwcolold = FrontWheel.transform.position;
         float fdelta = 0.0f;
         float bdelta = 0.0f;
 
@@ -122,28 +129,27 @@ public class AmbaruCharacter : MonoBehaviour
             
         }
 
-        downRay = new Ray(oldfwheel+Vector3.up* collisionOffset, -Vector3.up);
-        if (Physics.Raycast(downRay, out hit)) //FRONT WHEEL
+        downRay = new Ray(fwold.position+Vector3.up, -Vector3.up);
+        if (Physics.Raycast(downRay, out hit))
         {
-            if (-fgrav * Time.deltaTime> -hit.distance + bwrad + collisionOffset)
-            {
-                fgrav = 0.0f;
-
-                fdelta = -hit.distance + bwrad + collisionOffset;
-            }
-            else
-            {
-                fgrav += gravity * Time.deltaTime;
-                if (fgrav > maxGravity)
+        	if(-fgrav *Time.deltaTime< -hit.distance + bwrad + collisionOffset)
+        	{
+        		fgrav = 0.0f;
+        		FrontWheel.transform.localPosition = new Vector3(FrontWheel.transform.localPosition.x, -hit.distance + bwrad+collisionOffset, FrontWheel.transform.localPosition.z);
+        	}
+        	else
+        	{
+        		fgrav += gravity*Time.deltaTime;
+        		if (fgrav > maxGravity)
                     fgrav = maxGravity;
-
-                fdelta = -fgrav * Time.deltaTime;
-                //FrontWheel.transform.position = new Vector3(FrontWheel.transform.position.x, FrontWheel.transform.position.y + ((-bgrav) * Time.deltaTime), FrontWheel.transform.position.z);
-            }
-        }
+        		FrontWheel.transform.position = fwcolold + (Vector3.up * -fgrav);
+        		//FrontWheel.transform.localPosition = new Vector3(FrontWheel.transform.localPosition.x, -fgrav, FrontWheel.transform.localPosition.z);	
+        	}
+            
+		}
 
         transform.position = transform.position + (Vector3.up * bdelta);
-        FrontWheel.transform.position = oldfwheel + (Vector3.up * bdelta);
+        //FrontWheel.transform.position = oldfwheel + (Vector3.up * bdelta);
         //FrontWheel.transform.position = new Vector3(fwpos.transform.position.x, oldfwheel + fdelta, fwpos.transform.position.z);
 
         //END SET WHEELS ON GROUND
