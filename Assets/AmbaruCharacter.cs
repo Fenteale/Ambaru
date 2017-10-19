@@ -42,8 +42,8 @@ public class AmbaruCharacter : MonoBehaviour
         modzoffset = mod.transform.localPosition.z;
 
 
-        fgrav = gravity;
-        bgrav = gravity;
+        fgrav = 0.0f;
+        bgrav = 0.0f;
         maxGravity = gravity*10;
 
         FrontWheel.transform.SetPositionAndRotation(new Vector3(fwpos.gameObject.transform.position.x, fwpos.transform.position.y, fwpos.gameObject.transform.position.z), Quaternion.Euler(fwpos.transform.rotation.eulerAngles.x, FrontWheel.transform.rotation.eulerAngles.y, FrontWheel.transform.rotation.eulerAngles.z));
@@ -98,7 +98,8 @@ public class AmbaruCharacter : MonoBehaviour
         //END MOVEMENT CODE
 
         //SET WHEELS ON GROUND
-        float oldfwheel = FrontWheel.transform.position.y;
+        Vector3 oldfwheel = FrontWheel.transform.position;
+        // float oldfwheel = FrontWheel.transform.position.y;
         float fdelta = 0.0f;
         float bdelta = 0.0f;
 
@@ -106,7 +107,7 @@ public class AmbaruCharacter : MonoBehaviour
         Ray downRay = new Ray(transform.position + Vector3.up* collisionOffset, -Vector3.up);
         if(Physics.Raycast(downRay, out hit))  //BACK WHEEL
         {
-            if(-bgrav < -hit.distance + bwrad + collisionOffset)
+            if(-bgrav * Time.deltaTime< -hit.distance + bwrad + collisionOffset)
             {
                 bgrav = 0.0f;
                 bdelta = -hit.distance + bwrad + collisionOffset;
@@ -121,10 +122,10 @@ public class AmbaruCharacter : MonoBehaviour
             
         }
 
-        downRay = new Ray(fwpos.transform.position+Vector3.up* collisionOffset, -Vector3.up);
+        downRay = new Ray(oldfwheel+Vector3.up* collisionOffset, -Vector3.up);
         if (Physics.Raycast(downRay, out hit)) //FRONT WHEEL
         {
-            if (fgrav + bwrad + collisionOffset > hit.distance)
+            if (-fgrav * Time.deltaTime> -hit.distance + bwrad + collisionOffset)
             {
                 fgrav = 0.0f;
 
@@ -142,7 +143,8 @@ public class AmbaruCharacter : MonoBehaviour
         }
 
         transform.position = transform.position + (Vector3.up * bdelta);
-        FrontWheel.transform.position = new Vector3(fwpos.transform.position.x, oldfwheel + bdelta, fwpos.transform.position.z);
+        FrontWheel.transform.position = oldfwheel + (Vector3.up * bdelta);
+        //FrontWheel.transform.position = new Vector3(fwpos.transform.position.x, oldfwheel + fdelta, fwpos.transform.position.z);
 
         //END SET WHEELS ON GROUND
 
