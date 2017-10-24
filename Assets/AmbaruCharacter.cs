@@ -129,7 +129,7 @@ public class AmbaruCharacter : MonoBehaviour
             
         }
 
-        downRay = new Ray(fwold.position+Vector3.up, -Vector3.up);
+        downRay = new Ray(fwold.position+Vector3.up*collisionOffset, -Vector3.up);
         if (Physics.Raycast(downRay, out hit))
         {
         	if(-fgrav *Time.deltaTime< -hit.distance + bwrad + collisionOffset)
@@ -142,7 +142,7 @@ public class AmbaruCharacter : MonoBehaviour
         		fgrav += gravity*Time.deltaTime;
         		if (fgrav > maxGravity)
                     fgrav = maxGravity;
-        		FrontWheel.transform.position = fwcolold + (Vector3.up * -fgrav);
+                FrontWheel.transform.position = fwcolold - (Vector3.up* bdelta) + (Vector3.up * -fgrav);
         		//FrontWheel.transform.localPosition = new Vector3(FrontWheel.transform.localPosition.x, -fgrav, FrontWheel.transform.localPosition.z);	
         	}
             
