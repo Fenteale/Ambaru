@@ -117,6 +117,7 @@ GameObject:
   m_Component:
   - component: {fileID: 12046947}
   - component: {fileID: 12046946}
+  - component: {fileID: 12046944}
   m_Layer: 0
   m_Name: bWheel
   m_TagString: Untagged
@@ -124,6 +125,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!54 &12046944
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 12046943}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 122
+  m_CollisionDetection: 2
 --- !u!136 &12046946
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -132,7 +148,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 12046943}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 0.19
   m_Height: 0.5
   m_Direction: 0
@@ -930,6 +946,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1896977519}
   - component: {fileID: 1896977514}
+  - component: {fileID: 1896977515}
   m_Layer: 0
   m_Name: Ambaru
   m_TagString: Untagged
@@ -943,7 +960,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1896977513}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9385e1d82ab27bc45b154828f39bbfa3, type: 3}
   m_Name: 
@@ -958,8 +975,27 @@ MonoBehaviour:
   collisionOffset: 1
   FrontWheel: {fileID: 1945561022}
   BackWheel: {fileID: 12046943}
-  fgrav: 0
-  bgrav: 0
+--- !u!114 &1896977515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1896977513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 576c5bb2fbf8934458452fb09dc322d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0
+  maxSpeed: 40
+  turnSpeed: 200
+  gravity: 40
+  friction: 0.2
+  brakeStrength: 0.4
+  acc: 0.3
+  collisionOffset: 1
+  FrontWheel: {fileID: 1945561022}
+  BackWheel: {fileID: 12046943}
 --- !u!4 &1896977519
 Transform:
   m_ObjectHideFlags: 0
@@ -967,7 +1003,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1896977513}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 123.84, y: 46, z: 180.3}
+  m_LocalPosition: {x: 123.84, y: 17.61, z: 180.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1191137223}
@@ -987,6 +1023,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1945561024}
   - component: {fileID: 1945561023}
+  - component: {fileID: 1945561025}
   m_Layer: 0
   m_Name: fWheel
   m_TagString: Untagged
@@ -1002,7 +1039,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 1945561022}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   m_Radius: 0.19
   m_Height: 0.5
   m_Direction: 0
@@ -1021,6 +1058,21 @@ Transform:
   m_Father: {fileID: 1896977519}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!54 &1945561025
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1945561022}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 122
+  m_CollisionDetection: 2
 --- !u!1 &1980219479
 GameObject:
   m_ObjectHideFlags: 0

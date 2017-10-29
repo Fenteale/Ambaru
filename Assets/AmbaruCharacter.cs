@@ -34,6 +34,8 @@ public class AmbaruCharacter : MonoBehaviour
 
     private bool eGravity;
 
+    private Vector3 fwcolold;
+
     void Start()
     {
 
@@ -55,6 +57,8 @@ public class AmbaruCharacter : MonoBehaviour
 		originfWheel = FrontWheel.transform.position.y;
 
         wheeldistance = fwpos.transform.localPosition.z;
+
+        fwcolold = FrontWheel.transform.position;
     }
    
 
@@ -106,7 +110,7 @@ public class AmbaruCharacter : MonoBehaviour
         
         // float oldfwheel = FrontWheel.transform.position.y;
 		Transform fwold = fwpos.transform;
-		Vector3 fwcolold = FrontWheel.transform.position;
+		
         float fdelta = 0.0f;
         float bdelta = 0.0f;
 
@@ -142,7 +146,7 @@ public class AmbaruCharacter : MonoBehaviour
         		fgrav += gravity*Time.deltaTime;
         		if (fgrav > maxGravity)
                     fgrav = maxGravity;
-                FrontWheel.transform.position = fwcolold - (Vector3.up* bdelta) + (Vector3.up * -fgrav);
+                FrontWheel.transform.position = fwcolold;// - (Vector3.up* bdelta) + (Vector3.up * -fgrav);
         		//FrontWheel.transform.localPosition = new Vector3(FrontWheel.transform.localPosition.x, -fgrav, FrontWheel.transform.localPosition.z);	
         	}
             
@@ -171,6 +175,7 @@ public class AmbaruCharacter : MonoBehaviour
 
 
     }
+    
 
     private void OnCollisionStay(Collision collision)
     {
