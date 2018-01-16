@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ThirdPersonS : MonoBehaviour {
 
-    public Transform lookAt;
+    public Transform lookAt = null;
     public Transform camTransform;
 
     public float yDistance = 1.0f;
@@ -40,9 +40,13 @@ public class ThirdPersonS : MonoBehaviour {
     {
         Vector3 dir = new Vector3(0, 0, -distance);
         Vector3 offsety = new Vector3(0, yDistance, 0);
-        Quaternion rotation = Quaternion.Euler(currentY, currentX + lookAt.parent.transform.rotation.eulerAngles.y, 0);
-        camTransform.position = lookAt.position + offsety + rotation * dir;
+        if (lookAt != null)
+        {
+            Quaternion rotation = Quaternion.Euler(currentY, currentX + lookAt.parent.transform.rotation.eulerAngles.y, 0);
+            camTransform.position = lookAt.position + offsety + rotation * dir;
 
-        camTransform.LookAt(lookAt.position + offsety);
+            
+            camTransform.LookAt(lookAt.position + offsety);
+        }
     }
 }
