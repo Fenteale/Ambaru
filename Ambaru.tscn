@@ -1,0 +1,157 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Ambaru.gd" type="Script" id=1]
+
+[sub_resource type="CylinderMesh" id=1]
+
+top_radius = 1.0
+bottom_radius = 1.0
+height = 2.0
+radial_segments = 64
+rings = 4
+
+[sub_resource type="CapsuleShape" id=2]
+
+radius = 1.05901
+height = 1.18132
+
+[sub_resource type="SphereMesh" id=3]
+
+radius = 1.0
+height = 2.0
+radial_segments = 64
+rings = 32
+is_hemisphere = false
+
+[node name="VehicleBody" type="VehicleBody"]
+
+input_ray_pickable = true
+input_capture_on_drag = false
+collision_layer = 1
+collision_mask = 1
+mode = 0
+mass = 40.0
+friction = 1.0
+bounce = 0.0
+gravity_scale = 1.0
+custom_integrator = false
+continuous_cd = false
+contacts_reported = 0
+contact_monitor = false
+sleeping = false
+can_sleep = true
+axis_lock_linear_x = false
+axis_lock_linear_y = false
+axis_lock_linear_z = false
+axis_lock_angular_x = false
+axis_lock_angular_y = false
+axis_lock_angular_z = true
+linear_velocity = Vector3( 0, 0, 0 )
+linear_damp = -1.0
+angular_velocity = Vector3( 0, 0, 0 )
+angular_damp = -1.0
+engine_force = 0.0
+brake = 0.0
+steering = 0.0
+script = ExtResource( 1 )
+_sections_unfolded = [ "Angular", "Axis Lock", "Collision" ]
+MAX_ENGINE_FORCE = 200.0
+MAX_BRAKE_FORCE = 5.0
+MAX_STEER_ANGLE = 0.5
+steer_speed = 5.0
+joy_steering = 0
+steering_mult = -1.0
+joy_throttle = 7
+throttle_mult = 1.0
+joy_brake = 6
+brake_mult = 1.0
+
+[node name="MeshInstance" type="MeshInstance" parent="." index="0"]
+
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 1 )
+skeleton = NodePath("..")
+material/0 = null
+_sections_unfolded = [ "Transform" ]
+
+[node name="CollisionShape" type="CollisionShape" parent="." index="1"]
+
+transform = Transform( 1, 0, 0, 0, 1, 1.19209e-07, 0, -1.19209e-07, 1, 0, 1, 0 )
+shape = SubResource( 2 )
+disabled = false
+_sections_unfolded = [ "Transform" ]
+
+[node name="VehicleWheel" type="VehicleWheel" parent="." index="2"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.201475, 1.51893 )
+use_as_traction = false
+use_as_steering = true
+wheel_roll_influence = 0.1
+wheel_radius = 0.5
+wheel_rest_length = 0.15
+wheel_friction_slip = 10.5
+suspension_travel = 5.0
+suspension_stiffness = 5.88
+suspension_max_force = 6000.0
+damping_compression = 0.83
+damping_relaxation = 0.88
+
+[node name="MeshInstance" type="MeshInstance" parent="VehicleWheel" index="0"]
+
+transform = Transform( 0.25, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 3 )
+skeleton = NodePath("..")
+material/0 = null
+_sections_unfolded = [ "Transform" ]
+
+[node name="VehicleWheel2" type="VehicleWheel" parent="." index="3"]
+
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.201475, -1.56437 )
+use_as_traction = true
+use_as_steering = false
+wheel_roll_influence = 0.1
+wheel_radius = 0.5
+wheel_rest_length = 0.15
+wheel_friction_slip = 10.5
+suspension_travel = 5.0
+suspension_stiffness = 5.88
+suspension_max_force = 6000.0
+damping_compression = 0.83
+damping_relaxation = 0.88
+
+[node name="MeshInstance" type="MeshInstance" parent="VehicleWheel2" index="0"]
+
+transform = Transform( 0.25, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0 )
+layers = 1
+material_override = null
+cast_shadow = 1
+extra_cull_margin = 0.0
+use_in_baked_light = false
+lod_min_distance = 0.0
+lod_min_hysteresis = 0.0
+lod_max_distance = 0.0
+lod_max_hysteresis = 0.0
+mesh = SubResource( 3 )
+skeleton = NodePath("..")
+material/0 = null
+_sections_unfolded = [ "Transform" ]
+
+
